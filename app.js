@@ -8,6 +8,8 @@ const student_router = require('./routes/students')
 
 const mongoose = require('mongoose');
 
+
+app.use(express.json())
 //mongoose.connect('mongodb://127.0.0.1/students')
 mongoose.connect(process.env.DB_URL)
 
