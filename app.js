@@ -7,7 +7,8 @@ const PORT = 3400;
 const student_router = require('./routes/students')
 
 const mongoose = require('mongoose');
-
+const multer = require('multer');
+app.use('./uploads', express.static('uploads'));
 
 app.use(express.json())
 //mongoose.connect('mongodb://127.0.0.1/students')

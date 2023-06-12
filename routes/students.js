@@ -4,6 +4,7 @@ const router = express.Router()
 
 const studentModel = require('../models/students');
 
+const imageupload = require("../middlewares/imageupload")
 
 
 router.get('/',async(request,response)=>{
@@ -19,20 +20,40 @@ router.get('/',async(request,response)=>{
 })
 
 
-router.post('/',async(request,response)=>{
+router.post('/',imageupload.single('studentimage'),async(request,response)=>{
     // response.send("Adding new stdents")
-    const newStudent = new studentModel({
-        name: request.body.name ,
-        enrolledDeparment:request.body.enrolledDeparment ,
-        enrollmentDate:request.body.enrollmentDate
-    })
-    try{
+    const { name, enrolledDeparment, enrollmentDate } = request.body;
+    const studentimage = request.file ? request.file.path : null;
+    try {
+        const newStudent = new studentModel({
+          name,
+          enrolledDeparment,
+          enrollmentDate,
+          studentimage
+        });
+    
         const student = await newStudent.save();
-        response.status(201).json(student)
-    }
-    catch(error){
-        response.status(500).json({message:error.message})
-    }
+        response.status(201).json(student);
+      } catch (error) {
+        response.status(500).json({ message: error.message });
+      }
+    // const newStudent = new studentModel({
+    //     name: request.body.name ,
+    //     enrolledDeparment:request.body.enrolledDeparment ,
+    //     enrollmentDate:request.body.enrollmentDate,
+    //     studentimage:request.file.path
+    // })
+    // if(request.file){
+    //     newStudent.studentimage = request.file.path
+    // }
+
+    // try{
+    //     const student = await newStudent.save();
+    //     response.status(201).json(student)
+    // }
+    // catch(error){
+    //     response.status(500).json({message:error.message})
+    // }
 })
 
 router.get('/:id',getStudent,(request,response)=>{

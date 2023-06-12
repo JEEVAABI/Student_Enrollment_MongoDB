@@ -11,6 +11,10 @@ const studentSchema = new mongoose.Schema({
     enrollmentDate:{
         type:Date,
         default: Date.now()
+    },
+    studentimage:{
+        type:String,
+        required:true
     }
 })
 module.exports = mongoose.model('studentModel',studentSchema) 
